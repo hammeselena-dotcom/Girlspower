@@ -1,0 +1,64 @@
+/* Grundlayout */
+body {
+  font-family: system-ui, sans-serif;
+  background-color: #0f0f1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Container */
+main {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+}
+
+/* Rosa-Metallik-Schrift */
+.metallic-text {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(
+    135deg,
+    #ff69b4 0%, #ffc0cb 25%, #fff 50%, #ffc0cb 75%, #ff69b4 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+  margin: 0 0 20px;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Icon (Herz / Kussmund im Wechsel) */
+.icon {
+  font-size: 4rem;
+  animation: swap 2s infinite;
+}
+
+/* Inhalt per CSS wechseln */
+@keyframes swap {
+  0%, 49% { content: "❤️"; }
+  50%, 100% { content: "💋"; }
+}
+
+/* Trick: ::before verwenden, damit content sichtbar ist */
+.icon::before {
+  content: "❤️";
+  display: inline-block;
+  animation: swapContent 2s infinite;
+}
+
+@keyframes swapContent {
+  0%, 49% { content: "❤️"; }
+  50%, 100% { content: "💋"; }
+}
