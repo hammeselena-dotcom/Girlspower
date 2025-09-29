@@ -18,16 +18,14 @@ main {
   box-shadow: 0 12px 24px rgba(0,0,0,0.3);
 }
 
-/* Rosa-Metallik: Fallback + moderner Effekt */
+/* Rosa-Metallik: Fallback + Effekt */
 .metallic-text {
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0 0 20px;
-  /* Fallback-Farbe, wenn clip nicht unterstützt wird */
-  color: #ff69b4;
+  color: #ff69b4; /* Fallback */
 }
 
-/* Wenn background-clip:text verfügbar ist, aktiviere den Metallic-Gradient */
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .metallic-text {
     background: linear-gradient(
@@ -37,12 +35,15 @@ main {
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;               /* für FF/Chromium */
-    -webkit-text-fill-color: transparent; /* für WebKit/Safari */
+    color: transparent;
+    -webkit-text-fill-color: transparent;
     animation: shine 3s linear infinite;
   }
 }
-@keyframes shine { to { background-position: 200% center; } }
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
 
 /* Icon-Container */
 .icon {
@@ -51,11 +52,10 @@ main {
   height: 4rem;
   margin: 0 auto;
   line-height: 1;
-  /* bessere Performance auf Mobile */
   will-change: opacity, transform;
 }
 
-/* Beide Zeichen übereinander stapeln */
+/* Beide Emojis übereinander */
 .icon span {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -65,25 +65,41 @@ main {
   opacity: 0;
 }
 
-/* Herz ist in der ersten Hälfte sichtbar */
-.heart { animation: showHeart 2s steps(1, end) infinite; }
-/* Kussmund in der zweiten Hälfte sichtbar */
-.kiss  { animation: showKiss  2s steps(1, end) infinite; }
+/* Herz: sichtbar in der ersten Hälfte, hüpft */
+.heart {
+  animation: showHeart 2s steps(1, end) infinite, bounce 1.5s ease-in-out infinite;
+}
 
-/* Keine knappen 49/50%-Grenzen mehr → steps(1,end) verhindert Flackern */
+/* Kussmund: sichtbar in der zweiten Hälfte, zoomt */
+.kiss {
+  animation: showKiss 2s steps(1, end) infinite, zoom 1.5s ease-in-out infinite;
+}
+
+/* Sichtbarkeit umschalten */
 @keyframes showHeart {
-  0%   { opacity: 1; }
-  49.999% { opacity: 1; }
-  50%  { opacity: 0; }
-  100% { opacity: 0; }
+  0%,49.999% { opacity: 1; }
+  50%,100%   { opacity: 0; }
 }
 @keyframes showKiss {
-  0%   { opacity: 0; }
-  49.999% { opacity: 0; }
-  50%  { opacity: 1; }
-  100% { opacity: 1; }
+  0%,49.999% { opacity: 0; }
+  50%,100%   { opacity: 1; }
 }
 
-/* Optional: Bewegung, wenn du wieder Hüpfen möchtest
-.icon { animation: bob 1.5s ease-in-out
+/* Hüpfen fürs Herz */
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-20px); }
+}
+
+/* Zoom für den Kussmund */
+@keyframes zoom {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.3); }
+}
+
+/* Barrierearm: weniger Bewegung */
+@media (prefers-reduced-motion: reduce) {
+  .metallic-text { animation: none; }
+  .heart, .kiss { animation: none; opacity: 1; }
+}
 
